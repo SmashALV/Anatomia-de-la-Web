@@ -20,7 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="h-full"> {/* Changed lang to "es" */}
+    <html lang="es" className="h-full">
+      {/* Removed whitespace here */}
       <body
         className={cn(
           'h-full font-sans antialiased', // font-sans will now map to --font-inter
