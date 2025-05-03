@@ -23,12 +23,14 @@ import {
   FileText,
   Code,
 } from 'lucide-react';
+import { CodeBlock } from '@/components/code-block'; // Import code block component
 
 interface SectionInfo {
   tag: string;
   icon: ElementType;
   description: string;
   visualClass: string;
+  exampleHtml: string;
 }
 
 const sections: SectionInfo[] = [
@@ -36,43 +38,68 @@ const sections: SectionInfo[] = [
     tag: '<header>',
     icon: PanelTop,
     description:
-      'Represents introductory content, typically a group of introductory or navigational aids. It may contain some heading elements but also a logo, a search form, an author name, and other elements.',
+      'Represents introductory content, often containing headings, logos, search forms, or navigation. It provides context for the main content.',
     visualClass: 'border-red-500',
+    exampleHtml: `<header>
+  <h1>Main Page Title</h1>
+  <nav>...</nav>
+</header>`,
   },
   {
     tag: '<nav>',
     icon: Navigation,
     description:
-      'Represents a section of a page whose purpose is to provide navigation links, either within the current document or to other documents. Common examples of navigation sections are menus, tables of contents, and indexes.',
+      'Contains major navigation links for the site or page. Helps users find their way around.',
     visualClass: 'border-blue-500',
+    exampleHtml: `<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/about">About</a></li>
+  </ul>
+</nav>`,
   },
   {
     tag: '<main>',
-    icon: PanelLeft, // Using PanelLeft as a placeholder for main content area
+    icon: PanelLeft,
     description:
-      'Represents the dominant content of the <body> of a document. The main content area consists of content that is directly related to or expands upon the central topic of a document, or the central functionality of an application.',
+      'Encloses the dominant content unique to this specific page. There should only be one <main> element per page.',
     visualClass: 'border-green-500',
+    exampleHtml: `<main>
+  <h2>Article Title</h2>
+  <p>This is the primary content...</p>
+</main>`,
   },
   {
     tag: '<article>',
     icon: FileText,
     description:
-      'Represents a self-contained composition in a document, page, application, or site, which is intended to be independently distributable or reusable (e.g., in syndication). Examples include: a forum post, a magazine or newspaper article, or a blog entry.',
+      'Represents a self-contained piece of content that could stand alone (e.g., blog post, forum comment, news story). Often used within <main>.',
     visualClass: 'border-yellow-500',
+    exampleHtml: `<article>
+  <h3>Blog Post Title</h3>
+  <p>Content of the post...</p>
+</article>`,
   },
   {
     tag: '<aside>',
     icon: PanelRight,
     description:
-      'Represents a portion of a document whose content is only indirectly related to the document\'s main content. Asides are frequently presented as sidebars or call-out boxes.',
+      'Contains content tangentially related to the main content around it (e.g., sidebars, pull quotes, advertising).',
     visualClass: 'border-purple-500',
+    exampleHtml: `<aside>
+  <h4>Related Links</h4>
+  <ul>...</ul>
+</aside>`,
   },
   {
     tag: '<footer>',
     icon: PanelBottom,
     description:
-      'Represents a footer for its nearest sectioning content or sectioning root element. A footer typically contains information about the author of the section, copyright data or links to related documents.',
+      'Typically contains authorship information, copyright data, or links to related documents for the nearest sectioning ancestor (like <article> or <body>).',
     visualClass: 'border-orange-500',
+    exampleHtml: `<footer>
+  <p>&copy; 2024 Your Website</p>
+</footer>`,
   },
 ];
 
@@ -82,10 +109,10 @@ export default function SectionExplorer() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Code className="h-6 w-6 text-accent" />
-          HTML Section Explorer
+          HTML Semantic Sections
         </CardTitle>
         <CardDescription>
-          Understand the purpose of common HTML5 semantic sectioning elements.
+          Learn the purpose and see examples of common HTML5 sectioning elements. These tags help structure your page and improve accessibility and SEO.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -102,10 +129,16 @@ export default function SectionExplorer() {
                 <p className="text-sm text-muted-foreground">
                   {section.description}
                 </p>
+                {/* Visual Representation */}
                 <div
                   className={`rounded border-2 ${section.visualClass} p-4 text-center text-sm bg-muted/30`}
                 >
-                  Visual Representation of <code>{section.tag}</code>
+                  Visual Area for <code>{section.tag}</code>
+                </div>
+                 {/* Example HTML */}
+                 <div>
+                    <h4 className="mb-2 text-sm font-medium">Example Usage (HTML)</h4>
+                    <CodeBlock language="html" code={section.exampleHtml} />
                 </div>
               </AccordionContent>
             </AccordionItem>

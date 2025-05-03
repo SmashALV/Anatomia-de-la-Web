@@ -24,6 +24,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { Brush, LayoutGrid, Rows, Move } from 'lucide-react'; // Icons for CSS concepts
 import { cn } from '@/lib/utils';
+import { CodeBlock } from '@/components/code-block'; // Import code block component
 
 // --- Display Property ---
 const displayOptions = [
@@ -38,9 +39,18 @@ const displayOptions = [
 const DisplayDemo = () => {
   const [displayValue, setDisplayValue] = useState('block');
 
+  const htmlCode = `<span class="element">Element 1</span>
+<span class="element">Element 2</span>
+<span class="adjacent">Adjacent Element</span>`;
+
+  const cssCode = `.element {
+  display: ${displayValue};
+  /* Other styles like border, padding */
+}`;
+
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         <Label htmlFor="display-select" className="w-20 shrink-0">Property:</Label>
         <Select value={displayValue} onValueChange={setDisplayValue}>
           <SelectTrigger id="display-select" className="w-full md:w-[200px]">
@@ -59,14 +69,24 @@ const DisplayDemo = () => {
         The <code>display</code> property specifies the display behavior (the type of rendering box) of an element.
       </p>
       <div className="rounded border p-4 bg-muted/30 min-h-[150px]">
-         <div className="mb-2 text-xs text-muted-foreground">Container:</div>
-         <span style={{ display: displayValue }} className="inline-block border border-dashed border-accent bg-accent/20 p-2 text-sm">
-           Element 1
-         </span>
-         <span style={{ display: displayValue }} className="inline-block border border-dashed border-accent bg-accent/20 p-2 text-sm">
-           Element 2
-         </span>
-         <span className="inline-block border border-dashed border-foreground/30 p-2 text-sm">Adjacent Element</span>
+         <div className="mb-2 text-xs text-muted-foreground">Visual Demo:</div>
+         <div className="border border-dashed border-foreground/10 p-2"> {/* Outer container for context */}
+             <span style={{ display: displayValue }} className="inline-block border border-dashed border-accent bg-accent/20 p-2 text-sm">
+               Element 1
+             </span>
+             <span style={{ display: displayValue }} className="inline-block border border-dashed border-accent bg-accent/20 p-2 text-sm">
+               Element 2
+             </span>
+             <span className="inline-block border border-dashed border-foreground/30 p-2 text-sm">Adjacent Element</span>
+         </div>
+      </div>
+      <div className="space-y-2">
+        <h4 className="text-sm font-medium">HTML Structure</h4>
+        <CodeBlock language="html" code={htmlCode} />
+      </div>
+      <div className="space-y-2">
+        <h4 className="text-sm font-medium">CSS Applied</h4>
+        <CodeBlock language="css" code={cssCode} />
       </div>
     </div>
   );
@@ -84,10 +104,41 @@ const positionOptions = [
 
 const PositionDemo = () => {
   const [positionValue, setPositionValue] = useState('static');
+  const topValue = '10px'; // Example offset
+  const leftValue = '10px'; // Example offset
+
+  const htmlCode = `<div class="container">
+  <div class="sibling">Sibling Element 1</div>
+  <div class="positioned-element">
+    Positioned Element
+  </div>
+  <div class="sibling">Sibling Element 2</div>
+  <!-- More content for scrolling -->
+</div>`;
+
+  const cssCode = `.container {
+  position: relative; /* Needed for absolute positioning context */
+  /* Other styles */
+}
+
+.positioned-element {
+  position: ${positionValue};
+  top: ${positionValue !== 'static' ? topValue : 'auto'};
+  left: ${positionValue !== 'static' ? leftValue : 'auto'};
+  /* Add z-index, background, etc. as needed */
+}`;
+
+   const explanationMap: Record<string, string> = {
+      static: 'Default flow, top/left/etc. have no effect.',
+      relative: `Offset ${topValue}/${leftValue} from its normal position. Still part of the normal flow.`,
+      absolute: `Positioned relative to the nearest positioned ancestor (the container with 'position: relative'). Taken out of normal flow.`,
+      fixed: `Positioned relative to the viewport. Stays in the same place even when scrolling. Taken out of normal flow.`,
+      sticky: `Acts like 'relative' until it hits a specified threshold (e.g., top: ${topValue}) during scroll, then acts like 'fixed'. Needs a scrollable ancestor.`
+   }
 
   return (
      <div className="space-y-4">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         <Label htmlFor="position-select" className="w-20 shrink-0">Property:</Label>
         <Select value={positionValue} onValueChange={setPositionValue}>
           <SelectTrigger id="position-select" className="w-full md:w-[200px]">
@@ -103,32 +154,47 @@ const PositionDemo = () => {
         </Select>
       </div>
        <p className="text-sm text-muted-foreground">
-         The <code>position</code> property specifies the type of positioning method used for an element (static, relative, absolute, fixed, or sticky). Properties like <code>top</code>, <code>right</code>, <code>bottom</code>, and <code>left</code> only work on non-static elements.
+         The <code>position</code> property specifies the type of positioning method. Offsets (<code>top</code>, <code>left</code>, etc.) apply differently based on the value. {explanationMap[positionValue]}
        </p>
       <div className="relative rounded border p-4 bg-muted/30 min-h-[200px] overflow-auto">
-         <div className="mb-2 text-xs text-muted-foreground">Relative Container:</div>
+         <div className="mb-2 text-xs text-muted-foreground">Visual Demo (Scroll inside):</div>
          <div className="h-32"> {/* Add height to container for sticky/fixed demo */}
           <div className="border border-dashed border-foreground/30 p-2 text-sm mb-2">Sibling Element 1</div>
             <div
-              style={{ position: positionValue as any, top: '10px', left: '10px' }}
+              style={{
+                  position: positionValue as any,
+                  top: positionValue !== 'static' ? topValue : undefined, // Only apply offset if not static
+                  left: positionValue !== 'static' ? leftValue : undefined,
+                  zIndex: positionValue === 'absolute' || positionValue === 'fixed' ? 10 : undefined, // Bring forward if absolute/fixed
+                  background: positionValue === 'absolute' ? 'hsl(var(--accent)/0.3)' :
+                              positionValue === 'fixed' ? 'hsl(120, 60%, 70%)' : // Greenish for fixed
+                              positionValue === 'sticky' ? 'hsl(50, 60%, 70%)' : // Yellowish for sticky
+                              'hsl(var(--accent)/0.2)' // Default accent background
+               }}
               className={cn(
-                "border border-dashed border-accent bg-accent/20 p-2 text-sm w-32 h-16 z-10",
-                positionValue === 'absolute' && 'bg-blue-200', // Example styling
-                positionValue === 'fixed' && 'bg-green-200',
-                positionValue === 'sticky' && 'bg-yellow-200 top-2' // Sticky needs a top offset
+                "border border-dashed border-accent p-2 text-sm w-32", // Base styles
+                positionValue === 'sticky' && 'top-2' // Needs offset for sticky behavior
               )}
             >
               Positioned Element
-               {positionValue === 'relative' && <span className="text-xs block">(top: 10px, left: 10px relative to original)</span>}
-               {positionValue === 'absolute' && <span className="text-xs block">(top: 10px, left: 10px relative to container)</span>}
-                {positionValue === 'fixed' && <span className="text-xs block">(top: 10px, left: 10px relative to viewport)</span>}
-                 {positionValue === 'sticky' && <span className="text-xs block">(top: 10px relative to scroll container)</span>}
+              {positionValue === 'relative' && <span className="text-xs block mt-1 opacity-80">(relative offset)</span>}
+              {positionValue === 'absolute' && <span className="text-xs block mt-1 opacity-80">(absolute to container)</span>}
+              {positionValue === 'fixed' && <span className="text-xs block mt-1 opacity-80">(fixed to viewport)</span>}
+              {positionValue === 'sticky' && <span className="text-xs block mt-1 opacity-80">(sticky at top: {topValue})</span>}
             </div>
           <div className="border border-dashed border-foreground/30 p-2 text-sm mt-2">Sibling Element 2</div>
          </div>
           {/* Add more content to enable scrolling for sticky */}
           <div className="h-48 border border-dashed border-foreground/30 p-2 text-sm mt-4">Scrollable Content Area</div>
       </div>
+        <div className="space-y-2">
+            <h4 className="text-sm font-medium">HTML Structure</h4>
+            <CodeBlock language="html" code={htmlCode} />
+        </div>
+        <div className="space-y-2">
+            <h4 className="text-sm font-medium">CSS Applied</h4>
+            <CodeBlock language="css" code={cssCode} />
+        </div>
     </div>
   );
 };
@@ -151,6 +217,27 @@ const FlexboxDemo = () => {
     alignItems: alignItems,
     minHeight: '150px', // Ensure container has height
   };
+
+  const htmlCode = `<div class="flex-container">
+  <div class="flex-item">Item 1</div>
+  <div class="flex-item">Item 2</div>
+  <div class="flex-item">Item 3</div>
+</div>`;
+
+  const cssCode = `.flex-container {
+  display: flex;
+  flex-direction: ${flexDirection};
+  justify-content: ${justifyContent};
+  align-items: ${alignItems};
+  min-height: 150px; /* For demo */
+  /* Other styles */
+}
+
+.flex-item {
+  /* Styles for items like border, padding */
+  ${alignItems === 'stretch' ? '' : (flexDirection.includes('row') ? '/* height: auto; (default) */' : '/* width: auto; (default) */')}
+  ${alignItems !== 'stretch' ? (flexDirection.includes('row') ? 'height: 50px; /* Example fixed height */' : 'width: 80px; /* Example fixed width */') : ''}
+}`;
 
   const flexItemStyle = "border border-dashed border-accent bg-accent/20 p-2 text-sm";
 
@@ -180,13 +267,24 @@ const FlexboxDemo = () => {
          </div>
        </div>
         <p className="text-sm text-muted-foreground">
-          Flexbox is a one-dimensional layout model for arranging items in rows or columns. Properties like <code>flex-direction</code>, <code>justify-content</code>, and <code>align-items</code> control item distribution and alignment.
+          Flexbox arranges items along a main axis (controlled by <code>flex-direction</code>). <code>justify-content</code> aligns items along the main axis, and <code>align-items</code> aligns them along the cross axis.
         </p>
-      <div style={flexContainerStyle} className="rounded border p-4 bg-muted/30">
-         <div className={cn(flexItemStyle, alignItems === 'stretch' ? '' : 'h-12')}>Item 1</div>
-         <div className={cn(flexItemStyle, alignItems === 'stretch' ? '' : 'h-16')}>Item 2</div>
-         <div className={cn(flexItemStyle, alignItems === 'stretch' ? '' : 'h-10')}>Item 3</div>
+      <div className="rounded border p-4 bg-muted/30">
+           <div className="mb-2 text-xs text-muted-foreground">Visual Demo:</div>
+            <div style={flexContainerStyle} className="border border-dashed border-foreground/10">
+             <div className={cn(flexItemStyle, alignItems === 'stretch' ? '' : (flexDirection.startsWith('row') ? 'h-12' : 'w-20'))}>Item 1</div>
+             <div className={cn(flexItemStyle, alignItems === 'stretch' ? '' : (flexDirection.startsWith('row') ? 'h-16' : 'w-16'))}>Item 2</div>
+             <div className={cn(flexItemStyle, alignItems === 'stretch' ? '' : (flexDirection.startsWith('row') ? 'h-10' : 'w-24'))}>Item 3</div>
+          </div>
       </div>
+       <div className="space-y-2">
+            <h4 className="text-sm font-medium">HTML Structure</h4>
+            <CodeBlock language="html" code={htmlCode} />
+        </div>
+        <div className="space-y-2">
+            <h4 className="text-sm font-medium">CSS Applied</h4>
+            <CodeBlock language="css" code={cssCode} />
+        </div>
     </div>
   );
 };
@@ -205,6 +303,27 @@ const GridDemo = () => {
     gridTemplateColumns: gridTemplateColumns,
     gap: gap,
   };
+
+  const htmlCode = `<div class="grid-container">
+  <div class="grid-item">Item 1</div>
+  <div class="grid-item">Item 2</div>
+  <div class="grid-item">Item 3</div>
+  <div class="grid-item">Item 4</div>
+  <div class="grid-item">Item 5</div>
+  <div class="grid-item">Item 6</div>
+</div>`;
+
+  const cssCode = `.grid-container {
+  display: grid;
+  grid-template-columns: ${gridTemplateColumns};
+  gap: ${gap};
+  /* Other styles */
+}
+
+.grid-item {
+  /* Styles for items like border, padding */
+}`;
+
 
   const gridItemStyle = "border border-dashed border-accent bg-accent/20 p-4 text-sm text-center";
 
@@ -227,16 +346,27 @@ const GridDemo = () => {
          </div>
        </div>
        <p className="text-sm text-muted-foreground">
-         CSS Grid Layout is a two-dimensional layout system for the web. It lets you lay content out in rows and columns. <code>grid-template-columns</code> defines the columns, and <code>gap</code> sets the space between items.
+         CSS Grid creates layouts in rows and columns. <code>grid-template-columns</code> defines the track sizing function for columns, and <code>gap</code> defines the space between grid cells.
        </p>
-      <div style={gridContainerStyle} className="rounded border p-4 bg-muted/30">
-         <div className={gridItemStyle}>Item 1</div>
-         <div className={gridItemStyle}>Item 2</div>
-         <div className={gridItemStyle}>Item 3</div>
-         <div className={gridItemStyle}>Item 4</div>
-         <div className={gridItemStyle}>Item 5</div>
-         <div className={gridItemStyle}>Item 6</div>
+      <div className="rounded border p-4 bg-muted/30">
+          <div className="mb-2 text-xs text-muted-foreground">Visual Demo:</div>
+           <div style={gridContainerStyle} className="border border-dashed border-foreground/10">
+             <div className={gridItemStyle}>Item 1</div>
+             <div className={gridItemStyle}>Item 2</div>
+             <div className={gridItemStyle}>Item 3</div>
+             <div className={gridItemStyle}>Item 4</div>
+             <div className={gridItemStyle}>Item 5</div>
+             <div className={gridItemStyle}>Item 6</div>
+          </div>
       </div>
+        <div className="space-y-2">
+            <h4 className="text-sm font-medium">HTML Structure</h4>
+            <CodeBlock language="html" code={htmlCode} />
+        </div>
+        <div className="space-y-2">
+            <h4 className="text-sm font-medium">CSS Applied</h4>
+            <CodeBlock language="css" code={cssCode} />
+        </div>
     </div>
   );
 };
@@ -249,10 +379,10 @@ export default function CssFunctionPreview() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Brush className="h-6 w-6 text-accent" />
-          CSS Function Preview
+          CSS Property Preview
         </CardTitle>
         <CardDescription>
-          Explore common CSS properties and see their effects live.
+          Explore common CSS layout properties, see their effects live, and view the corresponding code.
         </CardDescription>
       </CardHeader>
       <CardContent>
