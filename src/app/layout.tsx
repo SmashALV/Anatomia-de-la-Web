@@ -10,8 +10,8 @@ const inter = Inter({ // Use Inter font
 });
 
 export const metadata: Metadata = {
-  title: 'Web Anatomy',
-  description: 'Understand web page structure, box model, and CSS functions.',
+  title: 'Anatomía Web',
+  description: 'Comprende la estructura de la página web, el modelo de caja y las funciones CSS.',
 };
 
 export default function RootLayout({
@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="es" className="h-full"> {/* Changed lang to "es" */}
       <body
         className={cn(
           'h-full font-sans antialiased', // font-sans will now map to --font-inter

@@ -16,7 +16,7 @@ export default function Home() {
         </div>
       </main>
        <footer className="py-6 text-center text-sm text-muted-foreground">
-        Built with Next.js and ShadCN UI.
+        Construido con Next.js y ShadCN UI.
       </footer>
     </div>
   );

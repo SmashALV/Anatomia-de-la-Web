@@ -23,13 +23,13 @@ import {
   FileText,
   Code,
 } from 'lucide-react';
-import { CodeBlock } from '@/components/code-block'; // Import code block component
+import { CodeBlock } from '@/components/code-block'; // Importa el componente de bloque de código
 
 interface SectionInfo {
   tag: string;
   icon: ElementType;
   description: string;
-  visualClass: string;
+  visualClass: string; // Mantener nombres de clases CSS en inglés
   exampleHtml: string;
 }
 
@@ -38,10 +38,10 @@ const sections: SectionInfo[] = [
     tag: '<header>',
     icon: PanelTop,
     description:
-      'Represents introductory content, often containing headings, logos, search forms, or navigation. It provides context for the main content.',
+      'Representa contenido introductorio, a menudo conteniendo encabezados, logotipos, formularios de búsqueda o navegación. Proporciona contexto para el contenido principal.',
     visualClass: 'border-red-500',
     exampleHtml: `<header>
-  <h1>Main Page Title</h1>
+  <h1>Título Principal de la Página</h1>
   <nav>...</nav>
 </header>`,
   },
@@ -49,12 +49,12 @@ const sections: SectionInfo[] = [
     tag: '<nav>',
     icon: Navigation,
     description:
-      'Contains major navigation links for the site or page. Helps users find their way around.',
+      'Contiene los enlaces de navegación principales para el sitio o la página. Ayuda a los usuarios a encontrar su camino.',
     visualClass: 'border-blue-500',
     exampleHtml: `<nav>
   <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/about">About</a></li>
+    <li><a href="/">Inicio</a></li>
+    <li><a href="/acerca-de">Acerca de</a></li>
   </ul>
 </nav>`,
   },
@@ -62,32 +62,32 @@ const sections: SectionInfo[] = [
     tag: '<main>',
     icon: PanelLeft,
     description:
-      'Encloses the dominant content unique to this specific page. There should only be one <main> element per page.',
+      'Encierra el contenido dominante único de esta página específica. Solo debe haber un elemento <main> por página.',
     visualClass: 'border-green-500',
     exampleHtml: `<main>
-  <h2>Article Title</h2>
-  <p>This is the primary content...</p>
+  <h2>Título del Artículo</h2>
+  <p>Este es el contenido principal...</p>
 </main>`,
   },
   {
     tag: '<article>',
     icon: FileText,
     description:
-      'Represents a self-contained piece of content that could stand alone (e.g., blog post, forum comment, news story). Often used within <main>.',
+      'Representa una pieza de contenido autocontenida que podría existir por sí sola (por ejemplo, una publicación de blog, comentario de foro, noticia). A menudo se usa dentro de <main>.',
     visualClass: 'border-yellow-500',
     exampleHtml: `<article>
-  <h3>Blog Post Title</h3>
-  <p>Content of the post...</p>
+  <h3>Título de la Publicación del Blog</h3>
+  <p>Contenido de la publicación...</p>
 </article>`,
   },
   {
     tag: '<aside>',
     icon: PanelRight,
     description:
-      'Contains content tangentially related to the main content around it (e.g., sidebars, pull quotes, advertising).',
+      'Contiene contenido relacionado tangencialmente con el contenido principal que lo rodea (por ejemplo, barras laterales, citas destacadas, publicidad).',
     visualClass: 'border-purple-500',
     exampleHtml: `<aside>
-  <h4>Related Links</h4>
+  <h4>Enlaces Relacionados</h4>
   <ul>...</ul>
 </aside>`,
   },
@@ -95,10 +95,10 @@ const sections: SectionInfo[] = [
     tag: '<footer>',
     icon: PanelBottom,
     description:
-      'Typically contains authorship information, copyright data, or links to related documents for the nearest sectioning ancestor (like <article> or <body>).',
+      'Normalmente contiene información de autoría, datos de copyright o enlaces a documentos relacionados para el ancestro de sección más cercano (como <article> o <body>).',
     visualClass: 'border-orange-500',
     exampleHtml: `<footer>
-  <p>&copy; 2024 Your Website</p>
+  <p>&copy; 2024 Tu Sitio Web</p>
 </footer>`,
   },
 ];
@@ -109,10 +109,10 @@ export default function SectionExplorer() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Code className="h-6 w-6 text-accent" />
-          HTML Semantic Sections
+          Secciones Semánticas HTML
         </CardTitle>
         <CardDescription>
-          Learn the purpose and see examples of common HTML5 sectioning elements. These tags help structure your page and improve accessibility and SEO.
+          Aprende el propósito y ve ejemplos de elementos comunes de sección HTML5. Estas etiquetas ayudan a estructurar tu página y mejoran la accesibilidad y el SEO.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -129,15 +129,15 @@ export default function SectionExplorer() {
                 <p className="text-sm text-muted-foreground">
                   {section.description}
                 </p>
-                {/* Visual Representation */}
+                {/* Representación Visual */}
                 <div
                   className={`rounded border-2 ${section.visualClass} p-4 text-center text-sm bg-muted/30`}
                 >
-                  Visual Area for <code>{section.tag}</code>
+                  Área visual para <code>{section.tag}</code>
                 </div>
-                 {/* Example HTML */}
+                 {/* Ejemplo HTML */}
                  <div>
-                    <h4 className="mb-2 text-sm font-medium">Example Usage (HTML)</h4>
+                    <h4 className="mb-2 text-sm font-medium">Ejemplo de Uso (HTML)</h4>
                     <CodeBlock language="html" code={section.exampleHtml} />
                 </div>
               </AccordionContent>

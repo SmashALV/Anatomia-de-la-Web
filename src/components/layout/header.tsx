@@ -7,10 +7,10 @@ export default function Header() {
         <div className="mr-4 flex items-center">
           <CodeXml className="h-6 w-6 mr-2 text-accent" />
           <span className="text-lg font-bold text-foreground">
-            Web Anatomy
+            Anatomía Web
           </span>
         </div>
-        {/* Navigation could go here if needed */}
+        {/* La navegación podría ir aquí si fuera necesario */}
       </div>
     </header>
   );

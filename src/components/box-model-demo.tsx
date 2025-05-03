@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Square } from 'lucide-react';
-import { CodeBlock } from '@/components/code-block'; // Import a component to render code
+import { CodeBlock } from '@/components/code-block'; // Importa un componente para renderizar código
 
 export default function BoxModelDemo() {
   const [padding, setPadding] = useState(10);
@@ -17,6 +17,7 @@ export default function BoxModelDemo() {
     setIsClient(true);
   }, []);
 
+  // Estilos de la caja. Solo se aplican en el cliente después de la hidratación.
   const boxStyle = isClient ? {
     padding: `${padding}px`,
     border: `${border}px solid hsl(var(--accent))`,
@@ -26,6 +27,7 @@ export default function BoxModelDemo() {
     transition: 'all 0.2s ease-in-out',
   } : {};
 
+  // Estilos del contenido interior.
   const contentStyle = {
     backgroundColor: 'hsl(var(--card))',
     color: 'hsl(var(--card-foreground))',
@@ -35,22 +37,24 @@ export default function BoxModelDemo() {
     borderRadius: 'calc(var(--radius) - 4px)',
   };
 
-  const htmlCode = `<div class="box">
-  <div class="content">Content</div>
+  // Código HTML de ejemplo.
+  const htmlCode = `<div class="caja">
+  <div class="contenido">Contenido</div>
 </div>`;
 
-  const cssCode = `.box {
-  padding: ${padding}px;
-  border: ${border}px solid hsl(var(--accent));
-  margin: ${margin}px;
-  background-color: hsl(var(--secondary));
-  /* ... other styles */
+  // Código CSS de ejemplo, actualizado dinámicamente.
+  const cssCode = `.caja {
+  padding: ${padding}px; /* Relleno */
+  border: ${border}px solid hsl(var(--accent)); /* Borde */
+  margin: ${margin}px; /* Margen */
+  background-color: hsl(var(--secondary)); /* Color de fondo */
+  /* ... otros estilos */
 }
 
-.content {
-  background-color: hsl(var(--card));
-  padding: 10px;
-  /* ... other styles */
+.contenido {
+  background-color: hsl(var(--card)); /* Color de fondo */
+  padding: 10px; /* Relleno */
+  /* ... otros estilos */
 }`;
 
   return (
@@ -58,78 +62,78 @@ export default function BoxModelDemo() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
            <Square className="h-6 w-6 text-accent" />
-          CSS Box Model Demo
+          Demo del Modelo de Caja CSS
         </CardTitle>
         <CardDescription>
-          Visualize how content, padding, border, and margin interact. Adjust the sliders below and see the corresponding HTML/CSS.
+          Visualiza cómo interactúan el contenido, el relleno (padding), el borde (border) y el margen (margin). Ajusta los deslizadores y observa el HTML/CSS correspondiente.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-8 md:grid-cols-2">
-          {/* Interactive Box Visualization */}
+          {/* Visualización Interactiva de la Caja */}
           <div className="flex flex-col items-center justify-center rounded-md border bg-muted p-8">
              <div
               style={boxStyle}
               className="relative flex items-center justify-center"
-              aria-live="polite" // Announce changes for screen readers
+              aria-live="polite" // Anuncia cambios para lectores de pantalla
             >
-              <div style={contentStyle}>Content</div>
-              {/* Labels for different parts */}
+              <div style={contentStyle}>Contenido</div>
+              {/* Etiquetas para las diferentes partes (solo en cliente) */}
               {isClient && (
                  <>
-                  {/* Margin Labels */}
+                  {/* Etiquetas de Margen */}
                   <span className="absolute -top-5 left-1/2 -translate-x-1/2 transform whitespace-nowrap rounded bg-muted px-1 text-xs text-muted-foreground">
-                    Margin ({margin}px)
+                    Margen ({margin}px)
                   </span>
                   <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 transform whitespace-nowrap rounded bg-muted px-1 text-xs text-muted-foreground">
-                    Margin ({margin}px)
+                    Margen ({margin}px)
                   </span>
                    <span className="absolute -left-10 top-1/2 -translate-y-1/2 transform -rotate-90 whitespace-nowrap rounded bg-muted px-1 text-xs text-muted-foreground md:-left-5">
-                    Margin ({margin}px)
+                    Margen ({margin}px)
                   </span>
                     <span className="absolute -right-10 top-1/2 -translate-y-1/2 transform rotate-90 whitespace-nowrap rounded bg-muted px-1 text-xs text-muted-foreground md:-right-5">
-                    Margin ({margin}px)
+                    Margen ({margin}px)
                   </span>
 
-                   {/* Border Labels (Inside Margin) */}
+                   {/* Etiquetas de Borde (Dentro del Margen) */}
                   <span className="absolute left-1/2 top-[calc(0px-0.75rem)] -translate-x-1/2 transform whitespace-nowrap text-xs text-accent">
-                    Border ({border}px)
+                    Borde ({border}px)
                   </span>
                    <span className="absolute left-1/2 bottom-[calc(0px-0.75rem)] -translate-x-1/2 transform whitespace-nowrap text-xs text-accent">
-                     Border ({border}px)
+                     Borde ({border}px)
                   </span>
                    <span className="absolute left-[calc(0px-0.75rem)] top-1/2 -translate-y-1/2 transform -rotate-90 whitespace-nowrap text-xs text-accent">
-                     Border ({border}px)
+                     Borde ({border}px)
                   </span>
                    <span className="absolute right-[calc(0px-0.75rem)] top-1/2 -translate-y-1/2 transform rotate-90 whitespace-nowrap text-xs text-accent">
-                    Border ({border}px)
+                    Borde ({border}px)
                   </span>
 
-                  {/* Padding Labels (Inside Border) */}
+                  {/* Etiquetas de Relleno (Dentro del Borde) */}
                    <span className="absolute left-1/2 top-[calc(0%+1px)] -translate-x-1/2 transform whitespace-nowrap text-xs text-secondary-foreground/80">
-                    Padding ({padding}px)
+                    Relleno ({padding}px)
                   </span>
                      <span className="absolute left-1/2 bottom-[calc(0%+1px)] -translate-x-1/2 transform whitespace-nowrap text-xs text-secondary-foreground/80">
-                    Padding ({padding}px)
+                    Relleno ({padding}px)
                   </span>
                   <span className="absolute left-[calc(0%+1px)] top-1/2 -translate-y-1/2 transform -rotate-90 whitespace-nowrap text-xs text-secondary-foreground/80">
-                    Padding ({padding}px)
+                    Relleno ({padding}px)
                   </span>
                     <span className="absolute right-[calc(0%+1px)] top-1/2 -translate-y-1/2 transform rotate-90 whitespace-nowrap text-xs text-secondary-foreground/80">
-                    Padding ({padding}px)
+                    Relleno ({padding}px)
                   </span>
                 </>
               )}
             </div>
           </div>
 
-          {/* Sliders and Code */}
+          {/* Deslizadores y Código */}
           <div className="space-y-6">
-             {/* Sliders */}
+             {/* Deslizadores */}
              <div className="space-y-4">
                 <div>
                   <Label htmlFor="padding-slider" className="mb-2 block text-sm font-medium">
-                    Padding ({padding}px)
+                    Relleno ({padding}px)
                   </Label>
                   <Slider
                     id="padding-slider"
@@ -138,12 +142,12 @@ export default function BoxModelDemo() {
                     step={1}
                     onValueChange={(value) => isClient && setPadding(value[0])}
                     disabled={!isClient}
-                    aria-label="Padding"
+                    aria-label="Relleno"
                   />
                 </div>
                 <div>
                   <Label htmlFor="border-slider" className="mb-2 block text-sm font-medium">
-                    Border ({border}px)
+                    Borde ({border}px)
                   </Label>
                   <Slider
                     id="border-slider"
@@ -152,12 +156,12 @@ export default function BoxModelDemo() {
                     step={1}
                     onValueChange={(value) => isClient && setBorder(value[0])}
                     disabled={!isClient}
-                    aria-label="Border Width"
+                    aria-label="Ancho del Borde"
                   />
                 </div>
                 <div>
                   <Label htmlFor="margin-slider" className="mb-2 block text-sm font-medium">
-                    Margin ({margin}px)
+                    Margen ({margin}px)
                   </Label>
                   <Slider
                     id="margin-slider"
@@ -166,20 +170,20 @@ export default function BoxModelDemo() {
                     step={1}
                     onValueChange={(value) => isClient && setMargin(value[0])}
                     disabled={!isClient}
-                    aria-label="Margin"
+                    aria-label="Margen"
                   />
                 </div>
             </div>
 
-            {/* Code Snippets */}
+            {/* Fragmentos de Código */}
              <div className="space-y-4">
                 <div>
-                    <h4 className="mb-2 text-sm font-medium">HTML Structure</h4>
+                    <h4 className="mb-2 text-sm font-medium">Estructura HTML</h4>
                     <CodeBlock language="html" code={htmlCode} />
                 </div>
                  <div>
-                    <h4 className="mb-2 text-sm font-medium">CSS Applied</h4>
-                    <CodeBlock language="css" code={isClient ? cssCode : '/* Adjust sliders to see CSS */'} />
+                    <h4 className="mb-2 text-sm font-medium">CSS Aplicado</h4>
+                    <CodeBlock language="css" code={isClient ? cssCode : '/* Ajusta los deslizadores para ver el CSS */'} />
                 </div>
             </div>
           </div>

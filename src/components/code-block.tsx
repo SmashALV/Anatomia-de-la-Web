@@ -17,7 +17,7 @@ export function CodeBlock({ code, language, className }: CodeBlockProps) {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(code).then(() => {
       setHasCopied(true);
-      setTimeout(() => setHasCopied(false), 1500); // Reset icon after 1.5 seconds
+      setTimeout(() => setHasCopied(false), 1500); // Restablecer ícono después de 1.5 segundos
     });
   };
 
@@ -28,7 +28,7 @@ export function CodeBlock({ code, language, className }: CodeBlockProps) {
         variant="ghost"
         className="absolute right-2 top-2 h-6 w-6 text-muted-foreground hover:bg-muted hover:text-foreground"
         onClick={copyToClipboard}
-        aria-label="Copy code"
+        aria-label="Copiar código"
       >
         {hasCopied ? <Check className="h-4 w-4" /> : <Clipboard className="h-4 w-4" />}
       </Button>
